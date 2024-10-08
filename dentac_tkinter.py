@@ -22,7 +22,7 @@ root.title("電卓")
 display_var = tk.StringVar()
 #電卓のディスプレイ部分
 display = tk.Entry(root, textvariable=display_var, font=("Arial", 18), bd=10, insertwidth=14, justify="right")
-display.grid(row=0, colum=0, columspan=4)
+display.grid(row=0, column=0, columnspan=4)
 
 buttons = [
     ('7', 1, 0), ('8', 1, 1), ('9', 1, 2), ('/', 1, 3),
@@ -33,8 +33,8 @@ buttons = [
 ]
 
 for (text, row, col) in buttons:
-    button = tk.Button(root, text=text, font=("Arial", 18), padz=20, pady=20,
+    button = tk.Button(root, text=text, font=("Arial", 18), padx=20, pady=20,
                        command=lambda symbol=text: button_click(symbol))
-    button.grid(row=row, colum=col)
+    button.grid(row=row, column=col)
 
 root.mainloop()
