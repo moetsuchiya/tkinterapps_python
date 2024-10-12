@@ -12,13 +12,8 @@ class ToDoApp:
         # アプリケーションのルートウィンドウを設定します。
         self.root = root
         self.root.tile('todoリスト')
+        
         # タスクを表示するためのフレームを作成します。
-        '''
-        インスタンス = モジュール.クラス() TK:tkinterウィンドウを作成
-        root = tk.Tk()
-        titleはtkクラスのメソッド(関数):ウィンドウのタイトルを設定する
-        root.title('todoリスト')
-        '''
         self.frame = tk.root
         self.frame.pack(pady=20)
 
@@ -65,8 +60,31 @@ class ToDoApp:
 
         #既存のタスクを読み込み
         self.load_tasks()
-
     
+    #タスクを追加するメソッド
+    def add_task(self, event=None):
+        task = self.entry_task.get() 
+        deadline = self.entry_deadline.get()
+        if task and deadline:
+            self.tasks.append({"task": task, "deadline": deadline, "completed": False})
+            self.update_listbox()
+            self.entry_task.delete(0, tk.END)
+            self.entry_deadline.delete(0, tk.END)
+        else:
+            messagebox.showwarning("警告", "タスクと納期を入力して")
+
+    def delete_task(self):
+        try:
+            index = self.listbox.curselection()[0]
+            del self.tasks[index]
+            self.tasks[index]["completed"] = True
+            self.update_listbox()
+        except IndexError:
+            messagebox.showwarning("警告", "削除するタスクを選んで")
+    
+    def complete_task(self):
+        try:
+            index = self.listbox.curselection()[0]
 
 
 
