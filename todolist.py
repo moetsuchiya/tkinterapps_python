@@ -12,13 +12,11 @@ class ToDoApp:
         # アプリケーションのルートウィンドウを設定します。
         self.root = root
         self.root.tile('todoリスト')
-        
         # タスクを表示するためのフレームを作成します。
-        self.frame = tk.root
+        self.frame = tk.Frame(self.root)
         self.frame.pack(pady=20)
-
         # タスクを表示するリストボックスを作成し、フレームに配置します。
-        self.listbox = tk.listbox(self.frame, width=50, height=10)
+        self.listbox = tk.Listbox(self.frame, width=50, height=10)
         self.listbox.pack(side=tk.LEFT, fill=tk.BOTH)
         # リストボックスのためのスクロールバーを作成し、フレームに配置します。
         self.scrollbar = tk.Scrollbar(self.frame, orient=tk.VERTICAL)
