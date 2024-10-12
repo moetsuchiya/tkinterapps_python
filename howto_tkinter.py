@@ -2,7 +2,7 @@
 import tkinter as tk
 #インスタンス = モジュール.クラス() TK:tkinterウィンドウを作成
 root = tk.Tk()
-#titleはtkクラスのメソッド:ウィンドウのタイトルを設定する
+#titleはtkクラスのメソッド(関数):ウィンドウのタイトルを設定する
 root.title('My Window')
 
 
