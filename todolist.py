@@ -34,18 +34,18 @@ class ToDoApp:
         self.entry_task = tk.Entry(self.task_frame, width=35)
         self.entry_task.pack(side=tk.LEFT)
         # タスク入力テキストボックスにエンターキーのバインドを追加
-        self.entry_task.bind("<return>", self.add_task)
+        self.entry_task.bind("<Return>", self.add_task)
         # 納期入力用のフレーム
         self.deadline_frame = tk.Frame(self.root)
         self.deadline_frame.pack(pady=5)
         # 納期入力ラベル
-        self.label_deadline = tk.Entry(self.deadline_frame, text="納期: ")
-        self.entry_deadline.pack(side=tk.LEFT)
+        self.label_deadline = tk.Label(self.deadline_frame, text="納期: ")
+        self.label_deadline.pack(side=tk.LEFT)
         # 納期入力テキストボックス 
-        self.entry_deadline = tk.Label(self.deadline_frame, width=35)
+        self.entry_deadline = tk.Entry(self.deadline_frame, width=35)
         self.entry_deadline.pack(side=tk.LEFT)
         # 納期入力テキストボックスにもエンターキーのバインドを追加
-        self.entry_deadline.bind("<return>", self.add_task)
+        self.entry_deadline.bind("<Return>", self.add_task)
         # タスクを追加するボタン。クリック時の動作を定義
         self.add_button = tk.Button(self.root, text="タスクを追加", command=self.add_task)
         self.add_button.pack(pady=5)
@@ -93,7 +93,7 @@ class ToDoApp:
             task_info = f'{task["task"]} [納期: {task["deadline"]}]'
             if task["completed"]:
                 task_info += " [完了]"
-        self.listbox.insert(tk.END, task_info)
+            self.listbox.insert(tk.END, task_info)
     
     def load_tasks(self):
         try:
@@ -108,7 +108,7 @@ class ToDoApp:
             json.dump(self.tasks, f)
         self.root.destroy()
 
-if __name__ == "__nain__":
+if __name__ == "__main__":
     root = tk.Tk()
     app = ToDoApp(root)
     root.protocol("WM_DELETE_WINDOW", app.save_tasks)
