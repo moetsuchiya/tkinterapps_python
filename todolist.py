@@ -29,7 +29,7 @@ class ToDoApp:
         self.task_frame = tk.Frame(self.root)
         self.task_frame.pack(pady=(5,0))
         # タスク入力ラベル
-        self.entry_task - tk.Entry(self.task_frame, width=35)
+        self.entry_task = tk.Entry(self.task_frame, width=35)
         self.entry_task.pack(side=tk.LEFT)
         # タスク入力テキストボックス
 
@@ -83,7 +83,35 @@ class ToDoApp:
     def complete_task(self):
         try:
             index = self.listbox.curselection()[0]
+            self.tasks[index]["completed"] = True
+            self.update_listbox()
+        except IndexError:
+            messagebox.showwarning("警告", "完了にするタスクを選択して")
+    
+    def update_listbox(self):
+        self.listbox.delete(0, tk.END)
+        for tasks in self.tasks:
+            task_info += " [完了]"
+        self.listbox.insert(tk.END, task_info)
+    
+    def load_tasks(self):
+        try:
+            with open("tasks.json", "r") as f: #何これ
+                self.tasks = json.load(f)
+                self.update_listbox()
+        except FileNotFoundError:
+            pass
+    
+    def save_tasks(self):
+        with open("tasks.json", "w") as f:
+            json.dump(self.tasks, f)
+        self.root.destroy()
 
+if __name__ == "__nain__":
+    root = tk.Tk()
+    app = ToDoApp(root)
+    root.protocol("WM_DELETE_WINDOW", app.save_tasks)
+    root.mainloop()
 
 
 
