@@ -11,7 +11,7 @@ class ToDoApp:
         self.tasks = []
         # アプリケーションのルートウィンドウを設定します。
         self.root = root
-        self.root.tile('todoリスト')
+        self.root.title('todoリスト')
         # タスクを表示するためのフレームを作成します。
         self.frame = tk.Frame(self.root)
         self.frame.pack(pady=20)
@@ -23,29 +23,29 @@ class ToDoApp:
         self.scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
         # リストボックスとスクロールバーを連携させます。
         self.listbox.config(yscrollcommand=self.scrollbar.set)
-        self.scrollbar.config(command=self.listboc.yview)
-
+        self.scrollbar.config(command=self.listbox.yview)
         # タスク入力用のフレーム
         self.task_frame = tk.Frame(self.root)
         self.task_frame.pack(pady=(5,0))
         # タスク入力ラベル
+        self.label_task = tk.Label(self.task_frame, text="タスク: ")
+        self.label_task.pack(side=tk.LEFT)
+        # タスク入力テキストボックス
         self.entry_task = tk.Entry(self.task_frame, width=35)
         self.entry_task.pack(side=tk.LEFT)
-        # タスク入力テキストボックス
-
+        # タスク入力テキストボックスにエンターキーのバインドを追加
         self.entry_task.bind("<return>", self.add_task)
         # 納期入力用のフレーム
         self.deadline_frame = tk.Frame(self.root)
         self.deadline_frame.pack(pady=5)
         # 納期入力ラベル
-        self.labeL_deadline = tk.Entry(self.deadline_frame, text="納期: ")
+        self.label_deadline = tk.Entry(self.deadline_frame, text="納期: ")
         self.entry_deadline.pack(side=tk.LEFT)
-        # 納期入力テキストボックス
-        self.entry_deadline = tk.Label(self.deadline_frame,"width=35")
+        # 納期入力テキストボックス 
+        self.entry_deadline = tk.Label(self.deadline_frame, width=35)
         self.entry_deadline.pack(side=tk.LEFT)
         # 納期入力テキストボックスにもエンターキーのバインドを追加
         self.entry_deadline.bind("<return>", self.add_task)
-
         # タスクを追加するボタン。クリック時の動作を定義
         self.add_button = tk.Button(self.root, text="タスクを追加", command=self.add_task)
         self.add_button.pack(pady=5)
@@ -53,7 +53,7 @@ class ToDoApp:
         self.delete_button = tk.Button(self.root, text="選択したタスクを削除", command=self.delete_task)
         self.delete_button.pack(pady=5)
         # タスクを完了にするボタン。クリック時の動作を定義
-        self.complete_button = tk.Button(self.root, text="選択したタスクを完了にする",command=self.complete_task)
+        self.complete_button = tk.Button(self.root, text="選択したタスクを完了にする", command=self.complete_task)
         self.complete_button.pack(pady=5)
 
         #既存のタスクを読み込み
@@ -75,7 +75,6 @@ class ToDoApp:
         try:
             index = self.listbox.curselection()[0]
             del self.tasks[index]
-            self.tasks[index]["completed"] = True
             self.update_listbox()
         except IndexError:
             messagebox.showwarning("警告", "削除するタスクを選んで")
@@ -90,8 +89,10 @@ class ToDoApp:
     
     def update_listbox(self):
         self.listbox.delete(0, tk.END)
-        for tasks in self.tasks:
-            task_info += " [完了]"
+        for task in self.tasks:
+            task_info = f'{task["task"]} [納期: {task["deadline"]}]'
+            if task["completed"]:
+                task_info += " [完了]"
         self.listbox.insert(tk.END, task_info)
     
     def load_tasks(self):
