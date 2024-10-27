@@ -1,6 +1,6 @@
 # as tkでtkinterにエイリアス(短い別名)をつける
 import tkinter as tk
-#インスタンス = モジュール.クラス() Tk:tkinterウィンドウを作成
+#必ずしもこうじゃない、はず。インスタンス = モジュール.クラス() Tk:tkinterウィンドウを作成
 root = tk.Tk()
 #titleはTkクラスのメソッド(関数):ウィンドウのタイトルを設定する
 root.title('My Window')

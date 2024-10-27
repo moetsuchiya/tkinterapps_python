@@ -10,7 +10,7 @@ bomb_rate = 0.12
 cell_size = 60
 nr.seed() #モジュール(関数)
 number_c = [(255, 0, 0,), (0, 128, 0), (0, 0, 255), (128, 0, 0), (128, 128, 0), (0, 0, 0), (128, 128, 128)]
-
+#
 bomb_num = int(w * h * bomb_rate)
 safe_num = w * h - bomb_num
 #numpy.random モジュール内の permutation() 関数を使用してランダムな並び替え
@@ -39,12 +39,12 @@ def make_img(extratext=''):
 
     font_size = cell_size * 0.02
     x_shift, y_shift = cell_size // 4, cell_size - (cell_size // 4)
-    for i,j in itertools.product(range(h), range(w)):
-        if flag[i, j]:
+    for i,j in itertools.product(range(h), range(w)):#全セルの座標(i, j)を取得
+        if flag[i, j]: #「旗（フラグ）」が立てられているかどうか
             cv2.putText(img, '+', cell_size*j+x_shift, cell_size*j+y_shift, cv2.FONT_HERSHEY_TRIPLEX, font_size, [0]*3, 2)
             continue
-        if not clear[i, j] or number[i, j] == 0:
-            continue
+        if not clear[i, j] or number[i, j] == 0: #clear: 「クリア済み」であるかどうか
+            continue #number: セル(i, j)に隣接する地雷（爆弾）の数
         cv2.putText(img, str(number[i, j]), (cell_size*j+x_shift, cell_size*j+y_shift), cv2.FONT_HERSHEY_TRIPLEX, font_size, number_c[number[i, j]-1], 2)
 
     if len(extract) > 0:
@@ -57,3 +57,46 @@ def make_img(extratext=''):
 def put_flag(i, j):
     global flag
     print('put_flag:({}, {})'.fotmat(j, i))
+
+    if　clear[i, j] or flag[i, j]:
+        print(' -> Cannot flag here')
+        return make_img()
+    
+    if not bomb[i, j]:
+        print(' -> Game Over')
+        return make_img(extratext='Game Over')
+    
+    flag[i, j] = True
+
+    if (flag == bomb).all():
+        print(' ->Success')
+        return make_img(extratext='success!!')
+
+def put_clear(i, j):
+    global clear
+    print('put_clear:({}, {})'.format(j, i))
+
+    if clear[i, j] or flag[i, j]:
+        print(' -> Cannot open here')
+        return make_img()
+    if bomb[i, j]:
+        print(' -> Game Over')
+        return make_img(extratext='Game Over')
+    
+    clear[i, j] = True
+
+    if number[i, j] == 0:
+        put_clear(np.clip(i - 1, 0, h - 1), np.clip(j - 1 , 0, w - 1))
+        put_clear(np.clip(i - 1, 0, h - 1), np.clip(j, 0, w - 1))
+        put_clear(np.clip(i - 1, 0, h - 1), np.clip(j + 1 , 0, w - 1))
+        put_clear(np.clip(i, 0, h - 1), np.clip(j - 1 , 0, w - 1))
+        put_clear(np.clip(i, 0, h - 1), np.clip(j + 1 , 0, w - 1))
+        put_clear(np.clip(i + 1, 0, h - 1), np.clip(j - 1 , 0, w - 1))
+        put_clear(np.clip(i + 1, 0, h - 1), np.clip(j, 0, w - 1))
+        put_clear(np.clip(i + 1, 0, h - 1), np.clip(j + 1 , 0, w - 1))
+
+    if (clear == ~bomb).all():
+        print(' -> Success')
+        return make_img(rxtratext='Success!!')
+    
+    return make_img()
