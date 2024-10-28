@@ -47,7 +47,7 @@ def make_img(extratext=''):
             continue #number: セル(i, j)に隣接する地雷（爆弾）の数
         cv2.putText(img, str(number[i, j]), (cell_size*j+x_shift, cell_size*j+y_shift), cv2.FONT_HERSHEY_TRIPLEX, font_size, number_c[number[i, j]-1], 2)
 
-    if len(extract) > 0:
+    if len(extratext) > 0:
         for i, j in itertools.product(range(h), range(w)):
             if bomb[i, j]:
                 cv2.putText(img, '@', (cell_size*j+x_shift, cell_size*j+x_shift), cv2.FONT_HERSHEY_TRIPLEX, font_size, (0, 0, 255), 2)
@@ -58,7 +58,7 @@ def put_flag(i, j):
     global flag
     print('put_flag:({}, {})'.fotmat(j, i))
 
-    if　clear[i, j] or flag[i, j]:
+    if clear[i, j] or flag[i, j]:
         print(' -> Cannot flag here')
         return make_img()
     
@@ -100,3 +100,23 @@ def put_clear(i, j):
         return make_img(rxtratext='Success!!')
     
     return make_img()
+
+def onMouse(event, x, y, flgs, param):
+    if event == cv2.EVENT_LBUTTONDOWN:
+        i, j = y//cell_size, x//cell_size
+        img = put_clear(i, j)
+        cv2.imshow(wname, img)
+    
+    if event == cv2.EVENT_RBUTTONDOWN:
+        i, j = y//cell_size, x//cell_size
+        img = put_flag(i, j)
+        cv2.imshow(wname, img)
+
+img = make_img()
+
+wname = 'Minesweeper'
+cv2.nameWindow(wname)
+cv2.setMouseCallback(wname, onMouse)
+
+cv2.imshow(wname, img)
+cv2.waitKey()
