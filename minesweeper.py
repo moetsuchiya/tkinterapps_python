@@ -4,8 +4,8 @@ import numpy.random as nr
 from scipy import signal
 import itertools
 
-w = 6
-h = 5
+w = 16
+h = 16
 bomb_rate = 0.12
 cell_size = 60
 nr.seed() #モジュール(関数)
@@ -97,7 +97,7 @@ def put_clear(i, j):
 
     if (clear == ~bomb).all():
         print(' -> Success')
-        return make_img(rxtratext='Success!!')
+        return make_img(extratext='Success!!')
     
     return make_img()
 
