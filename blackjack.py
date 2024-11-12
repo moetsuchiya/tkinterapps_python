@@ -6,6 +6,8 @@ random.shuffle(cards)
 dealer_cards = [cards.pop() for _ in range(2)]
 player_cards = [cards.pop() for _ in range(2)]
 
+print('あなたの手札は' + str(player_cards) + 'です')
+
 
 """
 def stand():
