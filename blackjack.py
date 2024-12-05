@@ -15,10 +15,10 @@ player_cards = [cards.pop() for _ in range(2)]
 print('あなたの手札は' + str(player_cards) + 'です')
 
 
-def numbering_cards(cards):
+def sum_cards(cards):
     values = []
-    for card in cards:
-        rank  = card[1:]
+    for card in cards: #Aを１、JQLを10にして、合計値を求める
+        rank = card[1:]
         if rank == 'A':
             values.append(1)
         elif rank in ['J', 'Q', 'K']:
@@ -27,35 +27,39 @@ def numbering_cards(cards):
             values.append(int(rank))
     return sum(values)
 
-player_num = numbering_cards(player_cards)
-print(player_num)
+player_num = sum_cards(player_cards) #プレイヤーの合計
+dealer_num = sum_cards(player_cards) #ディーラーの合計
+print('手札の合計は' + str(player_num))
 
 while player_num <= 16:
-    player_cards.append(cards.pop())
-    player_num = numbering_cards(player_cards)
+    player_cards.append(cards.pop()) #手札が16以下なら、一枚引く
+    player_num = sum_cards(player_cards)
 
-print(player_cards)
-print(player_num)
+print(player_cards) #プレイヤーのカード一覧
+print('手札の合計は' + str(player_num))
     
+hit_or_stand = input('HIT or STAND')
+while hit_or_stand == 'HIT':
+    player_cards.append(cards.pop()) #HITを選択したら、一枚引く
+    
+    print(player_cards)
+    print('手札の合計は' + str(player_num))
 
-# 全て数字にする、合計を出す
-# a = 1 or 11
-# 10 j q k = 10
+    hit_or_stand = input('HIT or STAND')
+    if hit_or_stand == 'STAND':
+        break
 
-# while 手札が16以下
-# なら　一枚引く
+def win_lose(player_num, dealer_num):
+    total_player = abs(21 - player_num)
+    total_dealer = abs(21 - dealer_num)
+    
+    print('あなたの手札の合計は' + str(player_num))
+    print('ディーラーの手札の合計は' + str(dealer_num))
+    if total_player > total_dealer:
+        print('you win!')
+    elif total_player == total_dealer:
+        print('aiko')
+    else:
+        print('you lose')
 
-# でないなら　引かない　
-#     hit or stand
-#         hit 
-#             一枚引く
-
-#         stand
-#             21に近いのは...勝ち負け
-
-# """
-# def stand():
-#     print(your_cards)
-#     print(dealer_cards)
-# """
-
+win_lose(player_num, dealer_num)
