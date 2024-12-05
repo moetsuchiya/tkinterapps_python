@@ -31,7 +31,7 @@ player_num = numbering_cards(player_cards)
 print(player_num)
 
 while player_num <= 16:
-    player_cards = player_cards.append(cards.pop())
+    player_cards.append(cards.pop())
     player_num = numbering_cards(player_cards)
 
 print(player_cards)
